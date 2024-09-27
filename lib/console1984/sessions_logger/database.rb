@@ -33,7 +33,10 @@ class Console1984::SessionsLogger::Database
     end
   end
 
-  def after_executing(statements)
+  def after_executing(statements, tempering_attempted, unprotected_mode)
+    if tempering_attempted && !unprotected_mode
+      @current_sensitive_access = nil
+    end
   end
 
   def suspicious_commands_attempted(statements)
