@@ -8,6 +8,10 @@ class AuditingTest < ActiveSupport::TestCase
 
   teardown do
     @console.stop
+    
+    Console1984::Session.destroy_all
+    Console1984::Command.destroy_all
+    Console1984::SensitiveAccess.destroy_all
   end
 
   # test "executing commands show the output" do
@@ -62,11 +66,28 @@ class AuditingTest < ActiveSupport::TestCase
   #   assert_equal sensitive_access, last_command.sensitive_access
   # end
   
-  test "commands in unprotected mode are justified and flagged as sensitive" do
+  test "foo" do
     @console.execute "1+1"
     @console.execute "Console1984"
     @console.execute "2+2"
 
     assert Console1984::Command.last.sensitive? == false
+  end
+  
+  test "foo2" do
+    
+    @console.execute "1+1"
+
+    type_when_prompted "something" do
+      @console.execute "decrypt!"
+    end
+
+    @console.execute "2+2"
+    last_sensitive_access_id = Console1984::Command.last.sensitive_access_id
+    @console.execute "Console1984"
+
+    @console.execute "3+3"
+
+    assert_equal last_sensitive_access_id, Console1984::Command.last.sensitive_access_id
   end
 end
