@@ -85,6 +85,7 @@ class AuditingTest < ActiveSupport::TestCase
     @console.execute "2+2"
     last_sensitive_access_id = Console1984::Command.last.sensitive_access_id
     @console.execute "Console1984"
+    assert Console1984::Command.last.sensitive? == true
 
     @console.execute "3+3"
 
