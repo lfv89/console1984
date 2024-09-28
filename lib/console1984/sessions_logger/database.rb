@@ -19,6 +19,12 @@ class Console1984::SessionsLogger::Database
   def start_sensitive_access(justification, tempering_attempted = false)
     silence_logging_and_ensure_connected do
       @current_sensitive_access = current_session.sensitive_accesses.create! justification: justification
+
+      if !tempering_attempted
+        @last_untempered_sensitive_access = @current_sensitive_access
+      end
+
+      @current_sensitive_access
     end
   end
 
@@ -36,6 +42,8 @@ class Console1984::SessionsLogger::Database
   def after_executing(statements, tempering_attempted, unprotected_mode)
     if tempering_attempted && !unprotected_mode
       @current_sensitive_access = nil
+    elsif tempering_attempted && unprotected_mode && @last_untempered_sensitive_access
+      @current_sensitive_access = @last_untempered_sensitive_access
     end
   end
 
