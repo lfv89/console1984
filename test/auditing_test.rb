@@ -61,7 +61,7 @@ class AuditingTest < ActiveSupport::TestCase
     assert_equal sensitive_access, last_command.sensitive_access
   end
 
-  test "a tamper attempt do not mark following legit commands as sensitive" do
+  test "a tamper attempt does not mark following legit commands as sensitive" do
     @console.execute "IRB"
     @console.execute "2+2"
 
