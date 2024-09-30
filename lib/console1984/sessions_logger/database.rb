@@ -16,7 +16,7 @@ class Console1984::SessionsLogger::Database
     @current_sensitive_access = nil
   end
 
-  def start_sensitive_access(justification, tampering_attempted = false)
+  def start_sensitive_access(justification)
     silence_logging_and_ensure_connected do
       @current_sensitive_access = current_session.sensitive_accesses.create! justification: justification
     end
@@ -44,7 +44,7 @@ class Console1984::SessionsLogger::Database
 
   def suspicious_commands_attempted(statements)
     silence_logging_and_ensure_connected do
-      sensitive_access = start_sensitive_access "Suspicious commands attempted", true
+      sensitive_access = start_sensitive_access "Suspicious commands attempted"
       Console1984::Command.last.update! sensitive_access: sensitive_access
     end
   end
