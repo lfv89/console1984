@@ -8,10 +8,6 @@ class AuditingTest < ActiveSupport::TestCase
 
   teardown do
     @console.stop
-    
-    Console1984::Session.destroy_all
-    Console1984::Command.destroy_all
-    Console1984::SensitiveAccess.destroy_all
   end
 
   test "executing commands show the output" do
