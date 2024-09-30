@@ -88,7 +88,7 @@ class AuditingTest < ActiveSupport::TestCase
     assert Console1984::Command.last.sensitive_access.justification == 'Checking for inconsistencies...'
   end
   
-  test "in unprotected mode, a tamper attempt still marks following unlegit commands as suspicious, but assign it to a different sensitive access" do
+  test "in unprotected mode, a tamper attempt still marks following unlegit commands as suspicious, but assigned to a different sensitive access" do
     @console.execute "1+1"
 
     type_when_prompted "Checking for inconsistencies..." do
